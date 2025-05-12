@@ -13,13 +13,10 @@ const expressLayouts = require('express-ejs-layouts');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB Connected'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,10 +39,10 @@ function checkAuth(req, res, next) {
 // Models
 const Message = require('./models/Message');
 const Line = require('./models/Line');
-const Eboard = require('./models/Eboard'); // ✅ renamed
+const Eboard = require('./models/Eboard');
 const GalleryImage = require('./models/GalleryImage');
 
-// Multer: Upload config
+// Multer upload config
 const galleryStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'public/images/galleryUploads/'),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
@@ -58,37 +55,22 @@ const eboardStorage = multer.diskStorage({
 });
 const uploadEboard = multer({ storage: eboardStorage });
 
-// Public routes
-app.get('/', (req, res) => res.render('index'));
-app.get('/about', (req, res) => res.render('about'));
-
-app.get('/gallery', async (req, res) => {
+// 🔹 Public Single Page
+app.get('/', async (req, res) => {
   const images = await GalleryImage.find().sort({ createdAt: -1 });
-  res.render('gallery', { images });
-});
-
-app.get('/lines', async (req, res) => {
   const lines = await Line.find().sort({ createdAt: 1 });
-  res.render('lines', { lines });
-});
-
-app.get('/eboard', async (req, res) => {
   const members = await Eboard.find().sort({ createdAt: -1 });
-  res.render('eboard', { members });
+  res.render('index', { images, lines, members });
 });
 
-app.get('/firm', (req, res) => res.render('firm'));
-app.get('/principles', (req, res) => res.render('principles'));
-app.get('/contact', (req, res) => res.render('contact'));
-app.get('/thankyou', (req, res) => res.render('thankyou'));
-
+// 🔹 Contact form
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
   await Message.create({ name, email, message });
-  res.redirect('/thankyou');
+  res.redirect('/#contact');
 });
 
-// Admin login/logout
+// 🔹 Admin login/logout
 app.get('/login', (req, res) => res.render('login', { error: null }));
 
 app.post('/login', async (req, res) => {
@@ -109,13 +91,13 @@ app.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-// Admin: Messages
+// 🔹 Admin: Messages
 app.get('/admin', checkAuth, async (req, res) => {
   const messages = await Message.find().sort({ createdAt: -1 });
   res.render('admin/index', { messages, activePage: 'messages' });
 });
 
-// Admin: Gallery
+// 🔹 Admin: Gallery
 app.get('/admin/gallery', checkAuth, async (req, res) => {
   const images = await GalleryImage.find().sort({ createdAt: -1 });
   res.render('admin/gallery', { images, activePage: 'gallery' });
@@ -136,7 +118,7 @@ app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/gallery');
 });
 
-// Admin: Eboard
+// 🔹 Admin: E-Board
 app.get('/admin/eboard', checkAuth, async (req, res) => {
   const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('admin/eboard', { members, activePage: 'eboard' });
