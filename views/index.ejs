@@ -78,34 +78,31 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="container py-5">
-  <h2 class="text-center mb-5 fw-bold" style="color: #7851A9;">Contact Us</h2>
-  <div class="row g-4">
-    <div class="col-md-6">
-      <form action="/contact" method="POST">
-        <div class="mb-3">
-          <label class="form-label">Name</label>
-          <input name="name" type="text" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input name="email" type="email" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Message</label>
-          <textarea name="message" class="form-control" rows="5" required></textarea>
-        </div>
-        <button class="btn btn-primary px-4">Send</button>
-      </form>
+<section id="contact" class="container py-5 text-center">
+  <h2 class="mb-4 fw-bold" style="color: #7851A9;">Connect With Us</h2>
+
+  <!-- WMU Betas Logo -->
+  <div class="mb-5">
+    <img src="/images/contact/betas-logo.png" alt="WMU Betas Logo" class="img-fluid" style="max-height: 120px;">
+  </div>
+
+  <!-- Social Media Icons -->
+  <div class="row justify-content-center g-4">
+    <div class="col-sm-4">
+      <img src="/images/contact/Insta.png" alt="Instagram" class="img-fluid mb-2" style="max-height: 80px;">
+      <p><a href="https://instagram.com/slbwmu" target="_blank" class="text-decoration-none">@slbwmu</a></p>
     </div>
-    <div class="col-md-6">
-      <p><i class="bi bi-envelope"></i> slb.wmu@gmail.com</p>
-      <p><i class="bi bi-instagram"></i> <a href="https://instagram.com/slbwmu" target="_blank">@slbwmu</a></p>
-      <p><i class="bi bi-facebook"></i> <a href="https://facebook.com/slbwmu" target="_blank">@slbwmu</a></p>
-      <p><i class="bi bi-tiktok"></i> <a href="https://tiktok.com/@slbwmu" target="_blank">@slbwmu</a></p>
+    <div class="col-sm-4">
+      <img src="/images/contact/Facebook.avif" alt="Facebook" class="img-fluid mb-2" style="max-height: 80px;">
+      <p><a href="https://facebook.com/slbwmu" target="_blank" class="text-decoration-none">@slbwmu</a></p>
+    </div>
+    <div class="col-sm-4">
+      <img src="/images/contact/tiktok.avif" alt="TikTok" class="img-fluid mb-2" style="max-height: 80px;">
+      <p><a href="https://tiktok.com/@slbwmu" target="_blank" class="text-decoration-none">@slbwmu</a></p>
     </div>
   </div>
 </section>
+
 
 <!-- FOOTER -->
 <%- include('partials/footer') %>
