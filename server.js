@@ -55,22 +55,22 @@ const eboardStorage = multer.diskStorage({
 });
 const uploadEboard = multer({ storage: eboardStorage });
 
-// 🔹 Public Single Page
+// Public single-page route
 app.get('/', async (req, res) => {
-  const images = await GalleryImage.find().sort({ sortDate: -1 });
-  const lines = await Line.find().sort({ sortDate: 1 });
-  const members = await Eboard.find().sort({ sortDate: -1 });
+  const images = await GalleryImage.find().sort({ createdAt: -1 });
+  const lines = await Line.find().sort({ sortDate: 1 }); // ✅ SORT BY DATE NOW
+  const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('index', { images, lines, members });
 });
 
-// 🔹 Contact form
+// Contact form
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
   await Message.create({ name, email, message });
   res.redirect('/#contact');
 });
 
-// 🔹 Admin login/logout
+// Admin login/logout
 app.get('/login', (req, res) => res.render('login', { error: null }));
 
 app.post('/login', async (req, res) => {
@@ -91,13 +91,13 @@ app.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-// 🔹 Admin: Messages
+// Admin dashboard
 app.get('/admin', checkAuth, async (req, res) => {
   const messages = await Message.find().sort({ createdAt: -1 });
   res.render('admin/index', { messages, activePage: 'messages' });
 });
 
-// 🔹 Admin: Gallery
+// Admin gallery
 app.get('/admin/gallery', checkAuth, async (req, res) => {
   const images = await GalleryImage.find().sort({ createdAt: -1 });
   res.render('admin/gallery', { images, activePage: 'gallery' });
@@ -118,7 +118,7 @@ app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/gallery');
 });
 
-// 🔹 Admin: E-Board
+// Admin eboard
 app.get('/admin/eboard', checkAuth, async (req, res) => {
   const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('admin/eboard', { members, activePage: 'eboard' });
