@@ -57,9 +57,9 @@ const uploadEboard = multer({ storage: eboardStorage });
 
 // 🔹 Public Single Page
 app.get('/', async (req, res) => {
-  const images = await GalleryImage.find().sort({ createdAt: -1 });
-  const lines = await Line.find().sort({ createdAt: 1 });
-  const members = await Eboard.find().sort({ createdAt: -1 });
+  const images = await GalleryImage.find().sort({ sortDate: -1 });
+  const lines = await Line.find().sort({ sortDate: 1 });
+  const members = await Eboard.find().sort({ sortDate: -1 });
   res.render('index', { images, lines, members });
 });
 
