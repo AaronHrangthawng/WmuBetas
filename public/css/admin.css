@@ -1,0 +1,39 @@
+/* admin.css */
+
+body {
+    background-color: #f8f9fa;
+  }
+  
+  h2, h3, h4 {
+    color: #7851A9;
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    color: #7851A9 !important;
+  }
+  
+  .navbar .nav-link.active {
+    font-weight: bold;
+    border-bottom: 2px solid #7851A9;
+  }
+  
+  .btn-primary,
+  .btn-success,
+  .btn-warning,
+  .btn-danger {
+    border-radius: 6px;
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+  }
+  
+  img.rounded-circle {
+    border: 2px solid #ccc;
+  }
+  
+  form input[type="file"] {
+    padding: 4px;
+  }
+  

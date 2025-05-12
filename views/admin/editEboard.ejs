@@ -1,0 +1,23 @@
+<%- include('partials/adminNav', { activePage: 'eboard' }) %>
+<link rel="stylesheet" href="/css/admin.css">
+
+
+<section class="container py-5">
+  <h2 class="mb-4">Edit E-Board Member</h2>
+
+  <form action="/admin/eboard/edit/<%= member._id %>" method="POST" class="row g-3">
+    <div class="col-md-4">
+      <input type="text" name="name" value="<%= member.name %>" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <input type="text" name="position" value="<%= member.position %>" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <input type="text" name="image" value="<%= member.image %>" class="form-control" required>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary">Update Member</button>
+      <a href="/admin/eboard" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</section>

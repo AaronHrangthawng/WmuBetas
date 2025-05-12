@@ -1,0 +1,46 @@
+<!-- WAVE DIVIDER TOP -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="width: 100%; height: 75px; display: block;">
+    <path d="M0,64L60,64C120,64,240,64,360,69.3C480,75,600,85,720,85.3C840,85,960,75,1080,64C1200,53,1320,43,1380,37.3L1440,32L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#ffffff"></path>
+  </svg>
+</div>
+
+<!-- PRINCIPLES SECTION -->
+<section id="principles" class="bg-light text-center fade-in-section py-5">
+  <div class="container">
+    <h2 class="mb-5" style="color: #7851A9;">Our Principles</h2>
+    <div class="row justify-content-center g-4">
+      <% const principles = [
+        { img: "Brotherhood.jpg", title: "Brotherhood", desc: "We forge lifelong bonds founded on trust, respect, and loyalty among our members and communities." },
+        { img: "scholarship.jpg", title: "Scholarship", desc: "We promote academic excellence, supporting the pursuit of knowledge and professional growth." },
+        { img: "culture.jpg", title: "Cultural Awareness", desc: "We celebrate, educate, and advocate for the rich cultures and traditions that define our diverse Brotherhood." },
+        { img: "service.jpg", title: "Community Service", desc: "We strive to make positive contributions to society through servant leadership and civic engagement." }
+      ]; %>
+
+      <% principles.forEach((p, i) => { %>
+        <div class="col-12 col-sm-6 col-md-3" data-aos="fade-up" data-aos-delay="<%= i * 100 %>">
+          <div class="card h-100 shadow-sm principle-card">
+            <img src="/images/principles/<%= p.img %>" alt="<%= p.title %>" class="card-img-top img-fluid rounded-top" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title fw-bold" style="color: #7851A9;"><%= p.title %></h5>
+              <p class="card-text text-dark small"><%= p.desc %></p>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- Custom Styles -->
+<style>
+  .principle-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+  }
+
+  .principle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(120, 81, 169, 0.25);
+  }
+</style>
