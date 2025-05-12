@@ -13,7 +13,7 @@ const expressLayouts = require('express-ejs-layouts');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database Connection
+// Database
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
-app.set('layout', 'layout'); // views/layout.ejs
+app.set('layout', 'layout');
 
 app.use(session({
   secret: 'securebetakey',
@@ -42,10 +42,10 @@ function checkAuth(req, res, next) {
 // Models
 const Message = require('./models/Message');
 const Line = require('./models/Line');
-const EBoard = require('./models/EBoard');
+const Eboard = require('./models/Eboard'); // ✅ renamed
 const GalleryImage = require('./models/GalleryImage');
 
-// Multer configs
+// Multer: Upload config
 const galleryStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'public/images/galleryUploads/'),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
@@ -56,11 +56,10 @@ const eboardStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'public/images/eboardUploads/'),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
-const uploadEBoard = multer({ storage: eboardStorage });
+const uploadEboard = multer({ storage: eboardStorage });
 
-// Public Routes
+// Public routes
 app.get('/', (req, res) => res.render('index'));
-
 app.get('/about', (req, res) => res.render('about'));
 
 app.get('/gallery', async (req, res) => {
@@ -74,15 +73,14 @@ app.get('/lines', async (req, res) => {
 });
 
 app.get('/eboard', async (req, res) => {
-  const members = await EBoard.find().sort({ createdAt: -1 });
+  const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('eboard', { members });
 });
 
 app.get('/firm', (req, res) => res.render('firm'));
-
 app.get('/principles', (req, res) => res.render('principles'));
-
 app.get('/contact', (req, res) => res.render('contact'));
+app.get('/thankyou', (req, res) => res.render('thankyou'));
 
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
@@ -90,9 +88,7 @@ app.post('/contact', async (req, res) => {
   res.redirect('/thankyou');
 });
 
-app.get('/thankyou', (req, res) => res.render('thankyou'));
-
-// Admin: Login / Logout
+// Admin login/logout
 app.get('/login', (req, res) => res.render('login', { error: null }));
 
 app.post('/login', async (req, res) => {
@@ -140,37 +136,37 @@ app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/gallery');
 });
 
-// Admin: EBoard
+// Admin: Eboard
 app.get('/admin/eboard', checkAuth, async (req, res) => {
-  const members = await EBoard.find().sort({ createdAt: -1 });
+  const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('admin/eboard', { members, activePage: 'eboard' });
 });
 
-app.post('/admin/eboard', checkAuth, uploadEBoard.single('image'), async (req, res) => {
+app.post('/admin/eboard', checkAuth, uploadEboard.single('image'), async (req, res) => {
   const { name, position } = req.body;
   const image = req.file.filename;
-  await EBoard.create({ name, position, image });
+  await Eboard.create({ name, position, image });
   res.redirect('/admin/eboard');
 });
 
 app.get('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
-  const member = await EBoard.findById(req.params.id);
+  const member = await Eboard.findById(req.params.id);
   res.render('admin/editEBoard', { member, activePage: 'eboard' });
 });
 
 app.post('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
   const { name, position, image } = req.body;
-  await EBoard.findByIdAndUpdate(req.params.id, { name, position, image });
+  await Eboard.findByIdAndUpdate(req.params.id, { name, position, image });
   res.redirect('/admin/eboard');
 });
 
 app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
-  const member = await EBoard.findById(req.params.id);
+  const member = await Eboard.findById(req.params.id);
   const pathToDelete = path.join(__dirname, 'public/images/eboardUploads', member.image);
   fs.unlink(pathToDelete, () => {});
-  await EBoard.findByIdAndDelete(req.params.id);
+  await Eboard.findByIdAndDelete(req.params.id);
   res.redirect('/admin/eboard');
 });
 
-// Start Server
+// Start server
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
