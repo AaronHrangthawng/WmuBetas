@@ -1,34 +1,21 @@
-<%- include('partials/adminNav', { activePage: 'messages' }) %>
 <link rel="stylesheet" href="/css/admin.css">
 
-
-<section class="container py-5">
-  <h2 class="mb-4">Contact Form Submissions</h2>
-
-  <% if (messages.length === 0) { %>
-    <p>No messages yet.</p>
-  <% } else { %>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead class="table-light">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Received</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% messages.forEach(msg => { %>
-            <tr>
-              <td><%= msg.name %></td>
-              <td><%= msg.email %></td>
-              <td><%= msg.message %></td>
-              <td><%= msg.createdAt.toLocaleString() %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-primary" href="/admin">Admin Dashboard</a>
+    <div class="d-flex">
+      <ul class="navbar-nav me-3">
+        <li class="nav-item">
+          <a class="nav-link <%= activePage === 'messages' ? 'active' : '' %>" href="/admin">Messages</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activePage === 'gallery' ? 'active' : '' %>" href="/admin/gallery">Gallery</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activePage === 'eboard' ? 'active' : '' %>" href="/admin/eboard">E-Board</a>
+        </li>
+      </ul>
+      <a href="/logout" class="btn btn-outline-secondary btn-sm">Logout</a>
     </div>
-  <% } %>
-</section>
+  </div>
+</nav>

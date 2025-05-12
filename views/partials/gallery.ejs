@@ -1,26 +1,17 @@
-<!-- GALLERY SECTION -->
-<section id="gallery" class="bg-white fade-in-section py-5">
-  <div class="container">
-    <h2 class="text-center mb-5" style="color: #7851A9;">Gallery</h2>
-    <div class="row justify-content-center g-4">
-      <% images.forEach((img, i) => { %>
-        <div class="col-12 col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="<%= i * 75 %>">
-          <a href="/images/gallery/<%= img.file %>" data-lightbox="chapter-gallery" data-title="<%= img.caption %>">
-            <div class="gallery-card position-relative rounded overflow-hidden shadow-sm gallery-hover">
-              <img
-                src="/images/gallery/<%= img.file %>"
-                alt="<%= img.caption %>"
-                class="img-fluid w-100"
-                style="height: 350px; object-fit: cover;"
-                loading="lazy"
-              >
-              <div class="position-absolute bottom-0 w-100 text-white text-center py-2 gallery-caption">
-                <strong><%= img.caption %></strong>
-              </div>
-            </div>
-          </a>
-        </div>
-      <% }) %>
-    </div>
+<% title = "Gallery – Exotic Epsilon" %>
+
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="display-5 fw-bold" style="color: #7851A9;">Gallery</h2>
+    <p class="lead">A collection of memories and moments from our chapter events.</p>
+  </div>
+
+  <div class="row g-4">
+    <% images.forEach(img => { %>
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <img src="/images/galleryUploads/<%= img.file %>" class="img-fluid rounded shadow-sm" alt="<%= img.caption %>" />
+        <p class="text-center small text-muted mt-1"><%= img.caption %></p>
+      </div>
+    <% }) %>
   </div>
 </section>
