@@ -122,10 +122,21 @@ app.get('/admin/gallery', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/gallery/upload', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  console.log("REQ.FILE (Gallery):", req.file);
   const caption = req.body.caption;
   const file = req.file?.path || "upload_failed";
   await GalleryImage.create({ file, caption });
+  res.redirect('/admin/gallery');
+});
+
+app.get('/admin/gallery/edit/:id', checkAuth, async (req, res) => {
+  const image = await GalleryImage.findById(req.params.id);
+  res.render('admin/editGallery', { image, activePage: 'gallery' });
+});
+
+app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
+  const { caption, existingFile } = req.body;
+  const file = req.file?.path || existingFile;
+  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
   res.redirect('/admin/gallery');
 });
 
@@ -141,7 +152,6 @@ app.get('/admin/eboard', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/eboard', checkAuth, uploadEboard.single('image'), async (req, res) => {
-  console.log("REQ.FILE (Eboard):", req.file);
   const { name, position } = req.body;
   const image = req.file?.path || "upload_failed";
   await Eboard.create({ name, position, image });
@@ -164,42 +174,6 @@ app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
   await Eboard.findByIdAndDelete(req.params.id);
   res.redirect('/admin/eboard');
 });
-
-// GET route to load gallery edit form
-app.get('/admin/gallery/edit/:id', checkAuth, async (req, res) => {
-  const image = await GalleryImage.findById(req.params.id);
-  res.render('admin/editGallery', { image, activePage: 'gallery' });
-});
-
-// POST route to update image or caption
-app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  const { caption, existingFile } = req.body;
-  const file = req.file?.path || existingFile;
-  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
-  res.redirect('/admin/gallery');
-});
-
-
-// DEBUG route
-app.get('/debug/env', (req, res) => {
-  res.json({
-    MONGO_URI: process.env.MONGO_URI ? '✅ set' : '❌ missing',
-    CLOUD_NAME: process.env.CLOUD_NAME || '❌ missing',
-    CLOUD_API_KEY: process.env.CLOUD_API_KEY ? '✅ set' : '❌ missing',
-    CLOUD_API_SECRET: process.env.CLOUD_API_SECRET ? '✅ set' : '❌ missing',
-    ADMIN_USER: process.env.ADMIN_USER || '❌ missing',
-    ADMIN_PASS: process.env.ADMIN_PASS ? '✅ set' : '❌ missing'
-  });
-});
-
-
-app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  const { caption, existingFile } = req.body;
-  const file = req.file?.path || existingFile;
-  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
-  res.redirect('/admin/gallery');
-});
-
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
