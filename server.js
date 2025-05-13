@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const expressLayouts = require('express-ejs-layouts');
@@ -38,7 +39,10 @@ app.set('layout', 'layout');
 app.use(session({
   secret: 'securebetakey',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI
+  })
 }));
 
 function checkAuth(req, res, next) {
@@ -118,9 +122,9 @@ app.get('/admin/gallery', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/gallery/upload', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  console.log("REQ.FILE (Gallery):", req.file); // Debug log
+  console.log("REQ.FILE (Gallery):", req.file);
   const caption = req.body.caption;
-  const file = req.file?.path || "upload_failed"; // fallback if upload failed
+  const file = req.file?.path || "upload_failed";
   await GalleryImage.create({ file, caption });
   res.redirect('/admin/gallery');
 });
@@ -137,9 +141,9 @@ app.get('/admin/eboard', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/eboard', checkAuth, uploadEboard.single('image'), async (req, res) => {
-  console.log("REQ.FILE (Eboard):", req.file); // Debug log
+  console.log("REQ.FILE (Eboard):", req.file);
   const { name, position } = req.body;
-  const image = req.file?.path || "upload_failed"; // fallback
+  const image = req.file?.path || "upload_failed";
   await Eboard.create({ name, position, image });
   res.redirect('/admin/eboard');
 });
@@ -160,7 +164,7 @@ app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/eboard');
 });
 
-// DEBUG route to check .env variables on Render
+// DEBUG route
 app.get('/debug/env', (req, res) => {
   res.json({
     MONGO_URI: process.env.MONGO_URI ? '✅ set' : '❌ missing',
