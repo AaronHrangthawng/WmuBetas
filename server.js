@@ -153,8 +153,9 @@ app.get('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
   res.render('admin/editEBoard', { member, activePage: 'eboard' });
 });
 
-app.post('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
-  const { name, position, image } = req.body;
+app.post('/admin/eboard/edit/:id', checkAuth, uploadEboard.single('image'), async (req, res) => {
+  const { name, position, existingImage } = req.body;
+  const image = req.file?.path || existingImage;
   await Eboard.findByIdAndUpdate(req.params.id, { name, position, image });
   res.redirect('/admin/eboard');
 });
@@ -175,6 +176,15 @@ app.get('/debug/env', (req, res) => {
     ADMIN_PASS: process.env.ADMIN_PASS ? '✅ set' : '❌ missing'
   });
 });
+
+
+app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
+  const { caption, existingFile } = req.body;
+  const file = req.file?.path || existingFile;
+  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
+  res.redirect('/admin/gallery');
+});
+
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
