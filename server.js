@@ -160,5 +160,17 @@ app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/eboard');
 });
 
+// DEBUG route to check .env variables on Render
+app.get('/debug/env', (req, res) => {
+  res.json({
+    MONGO_URI: process.env.MONGO_URI ? '✅ set' : '❌ missing',
+    CLOUD_NAME: process.env.CLOUD_NAME || '❌ missing',
+    CLOUD_API_KEY: process.env.CLOUD_API_KEY ? '✅ set' : '❌ missing',
+    CLOUD_API_SECRET: process.env.CLOUD_API_SECRET ? '✅ set' : '❌ missing',
+    ADMIN_USER: process.env.ADMIN_USER || '❌ missing',
+    ADMIN_PASS: process.env.ADMIN_PASS ? '✅ set' : '❌ missing'
+  });
+});
+
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
