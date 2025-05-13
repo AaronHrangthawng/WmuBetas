@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 
 const express = require('express');
@@ -6,9 +7,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 const expressLayouts = require('express-ejs-layouts');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +19,14 @@ const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
+
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
+});
+console.log("🔍 Cloudinary configured for:", process.env.CLOUD_NAME);
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,36 +52,39 @@ const Line = require('./models/Line');
 const Eboard = require('./models/Eboard');
 const GalleryImage = require('./models/GalleryImage');
 
-// Multer upload config
-const galleryStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/images/galleryUploads/'),
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+// Cloudinary upload storage
+const galleryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'galleryUploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif']
+  }
 });
 const uploadGallery = multer({ storage: galleryStorage });
 
-const eboardStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/images/eboardUploads/'),
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+const eboardStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'eboardUploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif']
+  }
 });
 const uploadEboard = multer({ storage: eboardStorage });
 
-// Public single-page route
+// Routes
 app.get('/', async (req, res) => {
   const images = await GalleryImage.find().sort({ createdAt: -1 });
-  const lines = await Line.find().sort({ _id: 1 }); // ✅ CORRECTED
+  const lines = await Line.find().sort({ _id: 1 });
   const members = await Eboard.find().sort({ createdAt: -1 });
   res.render('index', { images, lines, members });
 });
 
-
-// Contact form
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
   await Message.create({ name, email, message });
   res.redirect('/#contact');
 });
 
-// Admin login/logout
 app.get('/login', (req, res) => res.render('login', { error: null }));
 
 app.post('/login', async (req, res) => {
@@ -105,16 +118,14 @@ app.get('/admin/gallery', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/gallery/upload', checkAuth, uploadGallery.single('image'), async (req, res) => {
+  console.log("REQ.FILE (Gallery):", req.file); // Debug log
   const caption = req.body.caption;
-  const file = req.file.filename;
+  const file = req.file?.path || "upload_failed"; // fallback if upload failed
   await GalleryImage.create({ file, caption });
   res.redirect('/admin/gallery');
 });
 
 app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
-  const image = await GalleryImage.findById(req.params.id);
-  const pathToDelete = path.join(__dirname, 'public/images/galleryUploads', image.file);
-  fs.unlink(pathToDelete, () => {});
   await GalleryImage.findByIdAndDelete(req.params.id);
   res.redirect('/admin/gallery');
 });
@@ -126,8 +137,9 @@ app.get('/admin/eboard', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/eboard', checkAuth, uploadEboard.single('image'), async (req, res) => {
+  console.log("REQ.FILE (Eboard):", req.file); // Debug log
   const { name, position } = req.body;
-  const image = req.file.filename;
+  const image = req.file?.path || "upload_failed"; // fallback
   await Eboard.create({ name, position, image });
   res.redirect('/admin/eboard');
 });
@@ -144,9 +156,6 @@ app.post('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
-  const member = await Eboard.findById(req.params.id);
-  const pathToDelete = path.join(__dirname, 'public/images/eboardUploads', member.image);
-  fs.unlink(pathToDelete, () => {});
   await Eboard.findByIdAndDelete(req.params.id);
   res.redirect('/admin/eboard');
 });

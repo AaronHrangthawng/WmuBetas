@@ -17,12 +17,13 @@
   <div class="row g-4">
     <% images.forEach(img => { %>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <img src="/images/gallery/<%= img.file %>" class="img-fluid rounded shadow-sm" alt="<%= img.caption %>" />
+        <img src="<%= img.file %>" class="img-fluid rounded shadow-sm" alt="<%= img.caption %>" />
         <p class="text-center small text-muted mt-1"><%= img.caption %></p>
       </div>
     <% }) %>
   </div>
 </section>
+
 
 <!-- LINES -->
  
@@ -66,13 +67,14 @@
   <div class="row g-4 justify-content-center">
     <% members.forEach(member => { %>
       <div class="col-sm-6 col-md-4 col-lg-3">
-        <img src="/images/eboard/<%= member.image %>" class="img-fluid rounded-circle mb-2" style="width: 150px; height: 150px; object-fit: cover;" alt="<%= member.name %>">
+        <img src="<%= member.image %>" class="img-fluid rounded-circle mb-2" style="width: 150px; height: 150px; object-fit: cover;" alt="<%= member.name %>">
         <h5 class="fw-bold mb-1"><%= member.position %></h5>
         <p class="text-muted"><%= member.name %></p>
       </div>
     <% }) %>
   </div>
 </section>
+
 
 <!-- FIRM FAMILY -->
 <section id="firm">
