@@ -25,6 +25,7 @@
 </section>
 
 <!-- LINES -->
+ 
 <section id="lines" class="container py-5">
   <h2 class="text-center mb-5 fw-bold" style="color: #7851A9;">Lines Timeline</h2>
   <div class="accordion" id="linesAccordion">
@@ -39,6 +40,7 @@
             <%= line.title %> – <%= line.date %>
           </button>
         </h2>
+        
         <div id="collapse-<%= id %>" class="accordion-collapse collapse <%= i === 0 ? 'show' : '' %>">
           <div class="accordion-body">
             <% if (line.image) { %>

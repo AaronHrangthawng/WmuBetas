@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const chrono = require('chrono-node');
 const Line = require('./models/Line');
 require('dotenv').config();
 
@@ -11,30 +12,21 @@ async function updateSortDates() {
   for (const line of lines) {
     const rawDate = line.date;
 
-    // Try to extract a real date string (e.g. "May 1, 2024")
-    const match = rawDate.match(/([A-Za-z]+ \d{1,2}, \d{4})/);
+    const parsed = chrono.parseDate(rawDate);
 
-    if (!match) {
-      console.warn(`❌ Could not parse date from: ${rawDate}`);
+    if (!parsed) {
+      console.warn(`❌ Could not parse date from: "${rawDate}"`);
       continue;
     }
 
-    const parsed = new Date(match[1]);
-    if (isNaN(parsed)) {
-      console.warn(`❌ Invalid date format: ${match[1]}`);
-      continue;
-    }
-
-    const sortDate = parsed.toISOString().split('T')[0]; // "YYYY-MM-DD"
-
-    line.sortDate = sortDate;
+    line.sortDate = parsed;
     await line.save();
 
-    console.log(`✅ Updated ${line.title} → ${sortDate}`);
+    console.log(`✅ ${line.title} → ${parsed.toISOString().split('T')[0]}`);
   }
 
   await mongoose.disconnect();
-  console.log('All done ✅');
+  console.log('✅ Done updating sortDate fields.');
 }
 
 updateSortDates();
