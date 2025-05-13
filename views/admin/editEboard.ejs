@@ -1,36 +1,25 @@
-<%- include('partials/adminNav', { activePage: 'eboard' }) %>
+<%- include('../partials/adminNav', { activePage: 'eboard' }) %>
 <link rel="stylesheet" href="/css/admin.css">
 
-
 <section class="container py-5">
-  <h2 class="mb-4">Manage E-Board</h2>
+  <h2 class="mb-4">Edit E-Board Member</h2>
 
-  <form action="/admin/eboard" method="POST" enctype="multipart/form-data" class="row g-3 mb-5">
+  <form action="/admin/eboard/edit/<%= member._id %>" method="POST" class="row g-3">
     <div class="col-md-4">
-      <input type="text" name="name" class="form-control" placeholder="Name" required>
+      <label class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" value="<%= member.name %>" required>
     </div>
     <div class="col-md-4">
-      <input type="text" name="position" class="form-control" placeholder="Position" required>
+      <label class="form-label">Position</label>
+      <input type="text" name="position" class="form-control" value="<%= member.position %>" required>
     </div>
     <div class="col-md-4">
-      <input type="file" name="image" class="form-control" accept="image/*" required>
+      <label class="form-label">Image URL</label>
+      <input type="text" name="image" class="form-control" value="<%= member.image %>" required>
     </div>
     <div class="col-12">
-      <button class="btn btn-success">Add Member</button>
+      <button class="btn btn-primary">Update Member</button>
+      <a href="/admin/eboard" class="btn btn-secondary ms-2">Cancel</a>
     </div>
   </form>
-
-  <div class="row g-4">
-    <% members.forEach(member => { %>
-      <div class="col-sm-6 col-md-4 col-lg-3 text-center">
-        <img src="<%= member.image %>" class="img-fluid rounded-circle mb-2" style="width: 150px;">
-        <h6><%= member.position %></h6>
-        <p><%= member.name %></p>
-        <a href="/admin/eboard/edit/<%= member._id %>" class="btn btn-sm btn-warning me-2">Edit</a>
-        <form action="/admin/eboard/delete/<%= member._id %>" method="POST" class="d-inline" onsubmit="return confirm('Delete this member?');">
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </form>
-      </div>
-    <% }) %>
-  </div>
 </section>
