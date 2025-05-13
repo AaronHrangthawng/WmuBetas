@@ -134,11 +134,14 @@ app.get('/admin/gallery/edit/:id', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
+  console.log("🔧 GALLERY EDIT BODY:", req.body);
+  console.log("📸 GALLERY EDIT FILE:", req.file);
   const { caption, existingFile } = req.body;
   const file = req.file?.path || existingFile;
   await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
   res.redirect('/admin/gallery');
 });
+
 
 app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
   await GalleryImage.findByIdAndDelete(req.params.id);
@@ -164,11 +167,14 @@ app.get('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
 });
 
 app.post('/admin/eboard/edit/:id', checkAuth, uploadEboard.single('image'), async (req, res) => {
+  console.log("🔧 EBOARD EDIT BODY:", req.body);
+  console.log("📸 EBOARD EDIT FILE:", req.file);
   const { name, position, existingImage } = req.body;
   const image = req.file?.path || existingImage;
   await Eboard.findByIdAndUpdate(req.params.id, { name, position, image });
   res.redirect('/admin/eboard');
 });
+
 
 app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
   await Eboard.findByIdAndDelete(req.params.id);
