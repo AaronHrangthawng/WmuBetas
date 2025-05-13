@@ -22,7 +22,8 @@
       <div class="col-sm-6 col-md-4 col-lg-3 text-center">
         <img src="<%= img.file.startsWith('http') ? img.file : '/images/galleryUploads/' + img.file %>" class="img-fluid rounded shadow-sm mb-2" style="height: 180px; object-fit: cover;">
         <p class="small text-muted mb-1"><%= img.caption %></p>
-        <form action="/admin/gallery/delete/<%= img._id %>" method="POST" onsubmit="return confirm('Delete this image?');">
+        <a href="/admin/gallery/edit/<%= img._id %>" class="btn btn-sm btn-warning me-1">Edit</a>
+        <form action="/admin/gallery/delete/<%= img._id %>" method="POST" class="d-inline" onsubmit="return confirm('Delete this image?');">
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
       </div>

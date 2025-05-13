@@ -1,0 +1,23 @@
+<%- include('../partials/adminNav', { activePage: 'gallery' }) %>
+<link rel="stylesheet" href="/css/admin.css">
+
+<section class="container py-5">
+  <h2 class="mb-4">Edit Gallery Image</h2>
+
+  <form action="/admin/gallery/edit/<%= image._id %>" method="POST" enctype="multipart/form-data" class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Caption</label>
+      <input type="text" name="caption" class="form-control" value="<%= image.caption %>" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Current Image</label><br>
+      <img src="<%= image.file.startsWith('http') ? image.file : '/images/galleryUploads/' + image.file %>" class="img-fluid rounded mb-2" style="max-width: 100px;">
+      <input type="file" name="image" class="form-control mt-2" accept="image/*">
+      <input type="hidden" name="existingFile" value="<%= image.file %>">
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary">Update Image</button>
+      <a href="/admin/gallery" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
+  </form>
+</section>

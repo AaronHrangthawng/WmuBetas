@@ -165,6 +165,21 @@ app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
   res.redirect('/admin/eboard');
 });
 
+// GET route to load gallery edit form
+app.get('/admin/gallery/edit/:id', checkAuth, async (req, res) => {
+  const image = await GalleryImage.findById(req.params.id);
+  res.render('admin/editGallery', { image, activePage: 'gallery' });
+});
+
+// POST route to update image or caption
+app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
+  const { caption, existingFile } = req.body;
+  const file = req.file?.path || existingFile;
+  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
+  res.redirect('/admin/gallery');
+});
+
+
 // DEBUG route
 app.get('/debug/env', (req, res) => {
   res.json({
