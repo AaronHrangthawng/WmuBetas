@@ -11,17 +11,9 @@
   <%- include('partials/principles') %>
 </section>
 
-<!-- GALLERY -->
-<section id="gallery" class="container py-5 text-center">
-  <h2 class="mb-5 fw-bold" style="color: #7851A9;">Gallery</h2>
-  <div class="row g-4">
-    <% images.forEach(img => { %>
-      <div class="col-sm-6 col-md-4 col-lg-3">
-        <img src="<%= img.file %>" class="img-fluid rounded shadow-sm" alt="<%= img.caption %>" />
-        <p class="text-center small text-muted mt-1"><%= img.caption %></p>
-      </div>
-    <% }) %>
-  </div>
+<!-- FIRM FAMILY -->
+<section id="firm">
+  <%- include('partials/firm') %>
 </section>
 
 
@@ -75,10 +67,17 @@
   </div>
 </section>
 
-
-<!-- FIRM FAMILY -->
-<section id="firm">
-  <%- include('partials/firm') %>
+<!-- GALLERY -->
+<section id="gallery" class="container py-5 text-center">
+  <h2 class="mb-5 fw-bold" style="color: #7851A9;">Gallery</h2>
+  <div class="row g-4">
+    <% images.forEach(img => { %>
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <img src="<%= img.file %>" class="img-fluid rounded shadow-sm" alt="<%= img.caption %>" />
+        <p class="text-center small text-muted mt-1"><%= img.caption %></p>
+      </div>
+    <% }) %>
+  </div>
 </section>
 
 <!-- CONTACT -->
