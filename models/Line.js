@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const lineSchema = new mongoose.Schema({
+const LineSchema = new mongoose.Schema({
   title: String,
   date: String,
   image: String,
   members: [String],
   me: String,
-  ame: String
-}, { timestamps: true });
+  ame: String,
+  sortOrder: Number
+});
 
-module.exports = mongoose.model('Line', lineSchema);
+const Line = mongoose.model('Line', LineSchema);
+export default Line;

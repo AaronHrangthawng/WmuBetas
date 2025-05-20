@@ -1,9 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const eboardSchema = new mongoose.Schema({
-  name: String,
   position: String,
-  image: String
-}, { timestamps: true });
+  name: String,
+  bio: String,
+  image: String,
+  sortOrder: Number,
+});
 
-module.exports = mongoose.model('EBoard', eboardSchema);
+export default mongoose.models.Eboard || mongoose.model("Eboard", eboardSchema);

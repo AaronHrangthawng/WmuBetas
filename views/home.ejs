@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Home Content</title>
+</head>
+<body>
+  <h1>Edit Homepage Content</h1>
+  <form action="/admin/home" method="POST">
+    <label>Hero Title:</label><br/>
+    <input name="heroTitle" value="<%= content?.heroTitle || '' %>" /><br/>
+
+    <label>Hero Subtitle:</label><br/>
+    <input name="heroSubtitle" value="<%= content?.heroSubtitle || '' %>" /><br/>
+
+    <label>About Text:</label><br/>
+    <textarea name="aboutText"><%= content?.aboutText || '' %></textarea><br/>
+
+    <input type="hidden" name="existingHeroImage" value="<%= content?.heroImage || '' %>"/>
+    <input type="hidden" name="existingLogoImage" value="<%= content?.logoImage || '' %>"/>
+
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>

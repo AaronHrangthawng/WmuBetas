@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
-const Line = require('./models/Line');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Line from './models/Line.js'; // 👈 must end in .js
+dotenv.config();
+
 
 const lines = [
     {
       title: "F O U N D I N G L I N E",
       date: "L.E. - April 3, 1988 @ 12:45 AM",
-      image: "Founding Line.avif",
+      image: "",
       members: [
         "1. Juan De Dios Vega",
         "2. Eddie \"Pepe\" Balderramas",
@@ -183,7 +185,7 @@ const lines = [
       {
         title: "SIGMA LINE",
         date: "U.H.F. CROSSED MARCH 26th, 2010 @ 4:34:35 AM",
-        image: "Sigma Line.avif",
+        image: "",
         members: [
           "46. Eddie \"Ghazi\" Moses",
           "47. Raul \"Atrevido\" Lozano",
@@ -197,7 +199,7 @@ const lines = [
       {
         title: "TAU LINE",
         date: "T.R.I.U.M.P.H. CROSSED December 11, 2010 @ 2:48:49 AM",
-        image: "Tau Line.avif",
+        image: "",
         members: [
           "51. Robert \"Faux-Pas\" Jeffery",
           "52. Marcus \"Corifeo\" Jackson",
@@ -220,7 +222,7 @@ const lines = [
       {
         title: "PHI LINE",
         date: "D.C.U.F. CROSSED November 30, 2014 @ 1:52:59 AM",
-        image: "Phi Line.avif",
+        image: "",
         members: [
           "57. Christopher \"Grandiose\" Moore",
           "58. Levi \"Iluminado\" Soto",
@@ -233,7 +235,7 @@ const lines = [
       {
         title: "CHI LINE",
         date: "X.M.E.N. CROSSED March 21, 2015 @ 1:10:05 AM",
-        image: "Chi Line.avif",
+        image: "",
         members: [
           "61. Gabe \"Legado\" Balderramas",
           "62. Jose \"Vencedor\" Alexis Mejia",
@@ -245,7 +247,7 @@ const lines = [
       {
         title: "PSI LINE",
         date: "D.A.L.E. CROSSED October 24, 2015 @ 10:34:46 PM",
-        image: "Psi Line.avif",
+        image: "",
         members: [
           "64. Valentin \"Bandolero\" Rosas",
           "65. Jose \"Salvaje\" Rodriguez"
@@ -256,7 +258,7 @@ const lines = [
       {
         title: "ALPHA ALPHA LINE",
         date: "G.M.F.B CROSSED April 16, 2016 @ 1:54:07 AM",
-        image: "Alpha Alpha Line.avif",
+        image: "",
         members: [
           "66. Miguel \"Alquiles\" Paniagua",
           "67. Sergio \"Apoyo\" Garcia",
@@ -269,7 +271,7 @@ const lines = [
       {
         title: "ALPHA BETA LINE",
         date: "RESILIENCE CROSSED March 31, 2017 @ 10:40:53 PM",
-        image: "Alpha Beta Line.avif",
+        image: "",
         members: [
           "70. Ivan \"Fortunato\" Salazar",
           "71. Andy \"Águila\" Garcia",
@@ -283,7 +285,7 @@ const lines = [
       {
         title: "ALPHA GAMMA LINE",
         date: "K.I.N.G.S CROSSED December 8, 2017 @ 11:36:11 PM",
-        image: "Alpha Gamma Line.avif",
+        image: "",
         members: [
           "75. Fredrick \"Murciélago\" Dukhie",
           "76. Andres \"Pollux\" Diaz",
@@ -297,7 +299,7 @@ const lines = [
       {
         title: "ALPHA DELTA LINE",
         date: "A.P.H.P.S. CROSSED November 24, 2019 @ 12:12:12 AM",
-        image: "Alpha Delta Line.avif",
+        image: "",
         members: [
           "80. Luis \"Único\" Sanchez",
           "81. Alejandro \"Guardián\" Ortiz",
@@ -328,7 +330,7 @@ const lines = [
       {
         title: "ALPHA ETA LINE",
         date: "E.E.C.C.U.S. CROSSED December 16th, 2023 @ 10:36:48 PM",
-        image: "Alpha Eta Line.avif",
+        image: "",
         members: [
           "86. Javier \"Erudito\" Carrillo",
           "87. Marcos \"Ares\" Gomez",
@@ -343,7 +345,7 @@ const lines = [
       {
         title: "ALPHA THETA LINE",
         date: "S.S.L.C.S.Y.O. CROSSED December 1st, 2024 @ 1:35:35 AM",
-        image: "Alpha Theta Line.avif",
+        image: "",
         members: [
           "92. Juan-Luis \"Creador\" Gutierrez",
           "93. Aaron \"Laimi\" Hrangthawng",
@@ -362,6 +364,7 @@ const lines = [
     
   
 
+
 async function seed() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -369,8 +372,15 @@ async function seed() {
       useUnifiedTopology: true
     });
 
+    // ✅ Automatically add sortOrder
+    const linesWithSortOrder = lines.map((line, i) => ({
+      ...line,
+      sortOrder: i + 1
+    }));
+
     await Line.deleteMany({});
-    await Line.insertMany(lines);
+    await Line.insertMany(linesWithSortOrder);
+
     console.log("✅ Lines collection seeded.");
     process.exit();
   } catch (err) {

@@ -1,25 +1,40 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import path from 'path';
 
-require('dotenv').config();
+// Cloudinary setup
+import { v2 as cloudinary } from 'cloudinary';
 
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const bcrypt = require('bcrypt');
-const multer = require('multer');
-const expressLayouts = require('express-ejs-layouts');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const path = require('path');
+// Route imports
+import homeRoutes from './routes/homeRoutes.js';
+import aboutRoutes from './routes/aboutRoutes.js';
+import principlesRoutes from './routes/principlesRoutes.js';
+import firmRoutes from './routes/firmRoutes.js';
+import eboardRoutes from './routes/eboardRoutes.js';
+import linesRoutes from './routes/lineRoutes.js';
+import newGalleryRoutes from "./routes/newGalleryRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// Middlewares
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('✅ MongoDB connected'))
+.catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Cloudinary config
 cloudinary.config({
@@ -29,157 +44,34 @@ cloudinary.config({
 });
 console.log("🔍 Cloudinary configured for:", process.env.CLOUD_NAME);
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(expressLayouts);
-app.set('view engine', 'ejs');
-app.set('layout', 'layout');
-
-app.use(session({
-  secret: 'securebetakey',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URI
-  })
-}));
-
-function checkAuth(req, res, next) {
-  if (req.session.loggedIn) return next();
-  res.redirect('/login');
-}
-
-// Models
-const Message = require('./models/Message');
-const Line = require('./models/Line');
-const Eboard = require('./models/Eboard');
-const GalleryImage = require('./models/GalleryImage');
-
-// Cloudinary upload storage
-const galleryStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'galleryUploads',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif']
-  }
-});
-const uploadGallery = multer({ storage: galleryStorage });
-
-const eboardStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'eboardUploads',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif']
-  }
-});
-const uploadEboard = multer({ storage: eboardStorage });
 
 // Routes
-app.get('/', async (req, res) => {
-  const images = await GalleryImage.find().sort({ createdAt: -1 });
-  const lines = await Line.find().sort({ _id: 1 });
-  const members = await Eboard.find().sort({ createdAt: -1 });
-  res.render('index', { images, lines, members });
+app.use('/api/home', homeRoutes);
+app.use('/api/about', aboutRoutes);
+app.use('/api/principles', principlesRoutes);
+app.use('/api/firm', firmRoutes);
+app.use('/api/eboards', eboardRoutes);
+app.use('/api/lines', linesRoutes);
+app.use("/api/new-gallery", newGalleryRoutes);
+app.use("/api/upload", uploadRoutes);
+
+
+// Test endpoint
+app.get('/', (req, res) => {
+  res.send('🌐 Exotic Epsilon API is running...');
 });
 
-app.post('/contact', async (req, res) => {
-  const { name, email, message } = req.body;
-  await Message.create({ name, email, message });
-  res.redirect('/#contact');
+// 404 Handler
+app.use((req, res, next) => {
+  res.status(404).json({ message: '❌ Route not found' });
 });
 
-app.get('/login', (req, res) => res.render('login', { error: null }));
-
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  if (
-    username === process.env.ADMIN_USER &&
-    await bcrypt.compare(password, process.env.ADMIN_PASS)
-  ) {
-    req.session.loggedIn = true;
-    res.redirect('/admin');
-  } else {
-    res.render('login', { error: 'Invalid credentials' });
-  }
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('❌ Server Error:', err);
+  res.status(500).json({ message: 'Server Error' });
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
-// Admin dashboard
-app.get('/admin', checkAuth, async (req, res) => {
-  const messages = await Message.find().sort({ createdAt: -1 });
-  res.render('admin/index', { messages, activePage: 'messages' });
-});
-
-// Admin gallery
-app.get('/admin/gallery', checkAuth, async (req, res) => {
-  const images = await GalleryImage.find().sort({ createdAt: -1 });
-  res.render('admin/gallery', { images, activePage: 'gallery' });
-});
-
-app.post('/admin/gallery/upload', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  const caption = req.body.caption;
-  const file = req.file?.path || "upload_failed";
-  await GalleryImage.create({ file, caption });
-  res.redirect('/admin/gallery');
-});
-
-app.get('/admin/gallery/edit/:id', checkAuth, async (req, res) => {
-  const image = await GalleryImage.findById(req.params.id);
-  res.render('admin/editGallery', { image, activePage: 'gallery' });
-});
-
-app.post('/admin/gallery/edit/:id', checkAuth, uploadGallery.single('image'), async (req, res) => {
-  console.log("🔧 GALLERY EDIT BODY:", req.body);
-  console.log("📸 GALLERY EDIT FILE:", req.file);
-  const { caption, existingFile } = req.body;
-  const file = req.file?.path || existingFile;
-  await GalleryImage.findByIdAndUpdate(req.params.id, { file, caption });
-  res.redirect('/admin/gallery');
-});
-
-
-app.post('/admin/gallery/delete/:id', checkAuth, async (req, res) => {
-  await GalleryImage.findByIdAndDelete(req.params.id);
-  res.redirect('/admin/gallery');
-});
-
-// Admin eboard
-app.get('/admin/eboard', checkAuth, async (req, res) => {
-  const members = await Eboard.find().sort({ createdAt: -1 });
-  res.render('admin/eboard', { members, activePage: 'eboard' });
-});
-
-app.post('/admin/eboard', checkAuth, uploadEboard.single('image'), async (req, res) => {
-  const { name, position } = req.body;
-  const image = req.file?.path || "upload_failed";
-  await Eboard.create({ name, position, image });
-  res.redirect('/admin/eboard');
-});
-
-app.get('/admin/eboard/edit/:id', checkAuth, async (req, res) => {
-  const member = await Eboard.findById(req.params.id);
-  res.render('admin/editEBoard', { member, activePage: 'eboard' });
-});
-
-app.post('/admin/eboard/edit/:id', checkAuth, uploadEboard.single('image'), async (req, res) => {
-  console.log("🔧 EBOARD EDIT BODY:", req.body);
-  console.log("📸 EBOARD EDIT FILE:", req.file);
-  const { name, position, existingImage } = req.body;
-  const image = req.file?.path || existingImage;
-  await Eboard.findByIdAndUpdate(req.params.id, { name, position, image });
-  res.redirect('/admin/eboard');
-});
-
-
-app.post('/admin/eboard/delete/:id', checkAuth, async (req, res) => {
-  await Eboard.findByIdAndDelete(req.params.id);
-  res.redirect('/admin/eboard');
-});
-
-// Start server
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
