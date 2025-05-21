@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
 
-
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,13 +20,18 @@ export default function Header() {
           : "bg-white/30 backdrop-blur-lg"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-extrabold text-purple-700">
-          Exotic Epsilon
-        </h1>
+      <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center">
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl font-extrabold text-purple-700">
+            Exotic Epsilon
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600">
+            Western Michigan University • Established April 3, 1988
+          </p>
+        </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-6 text-gray-700 font-medium">
+        <nav className="hidden md:flex space-x-6 text-gray-700 font-medium mt-4 sm:mt-0">
           <a href="#home" className="hover:text-purple-600">Home</a>
           <a href="#about" className="hover:text-purple-600">About</a>
           <a href="#principles" className="hover:text-purple-600">Principles</a>
@@ -39,7 +43,7 @@ export default function Header() {
 
         {/* Mobile Toggle Button */}
         <button
-          className="md:hidden text-purple-700"
+          className="md:hidden text-purple-700 mt-2 sm:mt-0"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle Menu"
         >
