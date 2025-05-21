@@ -54,12 +54,13 @@ export default function Hero() {
           }`}
           role="img"
           aria-label={img.caption || "Hero image"}
+          style={{
+            backgroundImage: `url(${img.url})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
         >
-          <img
-            src={img.url}
-            alt={img.caption || "Hero background"}
-            className="w-full sm:w-auto h-full object-cover object-center mx-auto"
-          />
           <div className="absolute inset-0 bg-white/10 dark:bg-black/40 flex flex-col justify-center items-center text-center text-white px-4 pt-20 pb-16 sm:py-32 animate-fade-in">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-4 tracking-tight font-serif max-w-3xl">
               Exotic Epsilon Chapter
