@@ -17,7 +17,7 @@ export default function Gallery() {
   }, []);
 
   return (
-    <section id="gallery" className="py-20 bg-white text-gray-900 font-sans">
+    <section id="gallery" className="py-20 bg-transparent text-gray-900 font-sans">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl sm:text-5xl font-serif font-bold text-purple-700 mb-2">
@@ -48,12 +48,12 @@ export default function Gallery() {
                 <SwiperSlide key={img._id}>
                   <div
                     onClick={() => setFullscreenImg(img)}
-                    className="relative w-full rounded-xl overflow-hidden border border-purple-200 shadow cursor-pointer"
+                    className="relative w-full rounded-xl overflow-hidden border border-purple-200 shadow cursor-pointer bg-white/80 backdrop-blur-sm"
                   >
                     <img
                       src={img.url}
                       alt={img.title || "Gallery image"}
-                      className="w-full max-h-[600px] object-contain bg-white transition-transform duration-200 hover:scale-[1.02]"
+                      className="w-full max-h-[600px] object-contain bg-white/80 transition-transform duration-200 hover:scale-[1.02]"
                       loading="lazy"
                     />
                     {img.title && (
@@ -67,10 +67,10 @@ export default function Gallery() {
             </Swiper>
 
             {/* Custom Arrows */}
-            <div className="custom-prev absolute top-1/2 left-2 -translate-y-1/2 z-10 cursor-pointer p-2 bg-white/80 rounded-full shadow hover:bg-white transition">
+            <div className="custom-prev absolute top-1/2 left-2 -translate-y-1/2 z-10 cursor-pointer p-2 bg-white/80 backdrop-blur-sm rounded-full shadow hover:bg-white transition">
               <ChevronLeft className="w-6 h-6 text-purple-700" />
             </div>
-            <div className="custom-next absolute top-1/2 right-2 -translate-y-1/2 z-10 cursor-pointer p-2 bg-white/80 rounded-full shadow hover:bg-white transition">
+            <div className="custom-next absolute top-1/2 right-2 -translate-y-1/2 z-10 cursor-pointer p-2 bg-white/80 backdrop-blur-sm rounded-full shadow hover:bg-white transition">
               <ChevronRight className="w-6 h-6 text-purple-700" />
             </div>
           </div>

@@ -4,6 +4,8 @@ import App from "./App.jsx";
 import "./index.css";
 import "aos/dist/aos.css";
 import AOS from "aos";
+import './index.css';
+
 
 // Initialize AOS globally
 AOS.init({

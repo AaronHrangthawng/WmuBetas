@@ -29,7 +29,7 @@ export default function Principles() {
   };
 
   return (
-    <section id="principles" className="py-16 bg-white text-gray-900 font-sans">
+    <section id="principles" className="py-16 bg-transparent text-gray-900 font-sans">
       <div className="max-w-6xl mx-auto px-4">
         <motion.h2
           initial="hidden"
@@ -53,7 +53,7 @@ export default function Principles() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={slideUp}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-105"
+              className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-105"
             >
               {p.image && (
                 <img

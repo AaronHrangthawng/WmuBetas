@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-// Background colors by decade
 const getBgClass = (date) => {
   const year = parseInt(date?.match(/\d{4}/)?.[0] || "0");
-  if (year >= 2020) return "bg-purple-50";
-  if (year >= 2010) return "bg-purple-100";
-  if (year >= 2000) return "bg-purple-200";
-  if (year >= 1990) return "bg-purple-300";
-  return "bg-purple-400";
+  if (year >= 2020) return "bg-purple-50/80 backdrop-blur-sm";
+  if (year >= 2010) return "bg-purple-100/80 backdrop-blur-sm";
+  if (year >= 2000) return "bg-purple-200/80 backdrop-blur-sm";
+  if (year >= 1990) return "bg-purple-300/80 backdrop-blur-sm";
+  return "bg-purple-400/80 backdrop-blur-sm";
 };
 
 export default function Lines() {
@@ -54,7 +53,7 @@ export default function Lines() {
   };
 
   return (
-    <section id="lines" className="py-20 px-4 bg-white text-gray-900 font-sans">
+    <section id="lines" className="py-20 px-4 bg-transparent text-gray-900 font-sans">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial="hidden"

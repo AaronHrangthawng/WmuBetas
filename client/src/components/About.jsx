@@ -54,7 +54,7 @@ export default function About() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="bg-purple-50 border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
+      className="bg-white/70 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
     >
       <div className="flex items-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 tracking-tight mb-2">
         {sectionIcons[title]}
@@ -83,7 +83,7 @@ export default function About() {
   );
 
   return (
-    <section id="about" className="bg-white text-gray-900 py-16 px-4 sm:px-6 font-sans">
+    <section id="about" className="bg-transparent text-gray-900 py-16 px-4 sm:px-6 font-sans">
       <div className="max-w-6xl mx-auto space-y-16 sm:space-y-20">
         <motion.h2
           variants={slideUp}
@@ -113,7 +113,7 @@ export default function About() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="bg-purple-50 rounded-xl shadow-lg px-4 py-8 space-y-6"
+            className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg px-4 py-8 space-y-6"
           >
             <div className="flex items-center justify-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 mb-4">
               {sectionIcons["Founding Fathers"]}
@@ -141,14 +141,13 @@ export default function About() {
           </motion.div>
         )}
 
-        {/* Our Mission section (image larger + centered) */}
         {about.mission?.length > 0 && (
           <motion.div
             variants={slideUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="bg-purple-50 border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
+            className="bg-white/70 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
           >
             <div className="flex items-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 tracking-tight mb-2">
               {sectionIcons["Our Mission"]}

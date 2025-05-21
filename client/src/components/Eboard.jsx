@@ -23,7 +23,7 @@ export default function Eboard() {
   };
 
   return (
-    <section id="eboard" className="py-20 bg-white text-gray-900 font-sans">
+    <section id="eboard" className="py-20 bg-transparent text-gray-900 font-sans">
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -56,7 +56,7 @@ export default function Eboard() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={slideUp}
-              className="bg-purple-50 rounded-2xl shadow border border-purple-200 hover:shadow-md transition-transform hover:scale-[1.02] duration-200 text-center px-6 py-8 max-w-sm mx-auto"
+              className="bg-white/80 backdrop-blur-sm rounded-2xl shadow border border-purple-200 hover:shadow-md transition-transform hover:scale-[1.02] duration-200 text-center px-6 py-8 max-w-sm mx-auto"
             >
               {officer.image && (
                 <img

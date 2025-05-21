@@ -4,9 +4,11 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-b from-purple-50 via-white to-purple-50 text-center py-20 px-4 font-sans"
+      className="relative bg-transparent text-center py-20 px-4 font-sans overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto">
+      {/* Removed SVG wave */}
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <h2 className="text-4xl sm:text-5xl font-bold text-purple-700 mb-10 font-serif">
           Connect With Us
         </h2>
@@ -32,7 +34,7 @@ export default function Contact() {
             href="https://www.instagram.com/wmubetas/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group bg-white rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
+            className="group bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
           >
             <img
               src="/uploads/Instagram_icon.png"
@@ -49,7 +51,7 @@ export default function Contact() {
             href="https://www.tiktok.com/@wmu.betas"
             target="_blank"
             rel="noopener noreferrer"
-            className="group bg-white rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
+            className="group bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
           >
             <img
               src="/uploads/tiktok.avif"
@@ -66,7 +68,7 @@ export default function Contact() {
             href="https://www.facebook.com/wmu.betas"
             target="_blank"
             rel="noopener noreferrer"
-            className="group bg-white rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
+            className="group bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition-all p-6 flex flex-col items-center space-y-4"
           >
             <img
               src="/uploads/Facebook.avif"

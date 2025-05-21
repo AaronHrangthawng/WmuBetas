@@ -29,7 +29,7 @@ export default function FirmFamily() {
   };
 
   return (
-    <section id="firm-family" className="py-20 bg-white text-gray-900 font-sans">
+    <section id="firm-family" className="py-20 bg-transparent text-gray-900 font-sans">
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial="hidden"
@@ -65,7 +65,7 @@ export default function FirmFamily() {
               whileInView="visible"
               viewport={{ once: true }}
               variants={slideUp}
-              className="group bg-white rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 overflow-hidden"
+              className="group bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 overflow-hidden"
             >
               <div className="relative w-full h-44 overflow-hidden">
                 {f.image && (

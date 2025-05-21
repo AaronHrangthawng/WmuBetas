@@ -4,15 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exotic Epsilon</title>
+    <style>
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-60px) scale(1.15);
+        }
+      }
 
-    <!-- ✅ Google Fonts: Inter & Playfair Display -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap"
-      rel="stylesheet"
-    />
+      .blur-layer {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .blur-bg {
+        position: absolute;
+        width: 1200px;
+        height: 1200px;
+        filter: blur(160px);
+        opacity: 0.7;
+        animation: float 6s ease-in-out infinite;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+      }
+
+      .bg1 {
+        top: 40%;
+        left: 30%;
+        background: #a78bfa;
+      }
+
+      .bg2 {
+        top: 60%;
+        left: 70%;
+        background: #c084fc;
+      }
+    </style>
   </head>
   <body class="bg-white dark:bg-gray-900">
+    <!-- ✅ Animated intensified blurry gradient background -->
+    <div class="blur-layer">
+      <div class="blur-bg bg1"></div>
+      <div class="blur-bg bg2"></div>
+    </div>
+
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

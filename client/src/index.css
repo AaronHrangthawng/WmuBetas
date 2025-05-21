@@ -1,9 +1,4 @@
-/* Force light mode background and text globally */
-html,
-body {
-  background-color: white !important;
-  color: black !important;
-}
+
 
 @media (prefers-color-scheme: dark) {
   html:not(.dark) body {
