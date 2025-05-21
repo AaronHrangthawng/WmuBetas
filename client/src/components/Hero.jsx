@@ -42,7 +42,7 @@ export default function Hero() {
 
   return (
     <div
-      className="relative h-screen overflow-hidden bg-white dark:bg-black text-gray-900 dark:text-white"
+      className="relative h-[90vh] sm:h-screen overflow-hidden bg-white dark:bg-black text-gray-900 dark:text-white"
       id="home"
       {...swipeHandlers}
     >
@@ -61,16 +61,16 @@ export default function Hero() {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="absolute inset-0 bg-white/10 dark:bg-black/40 flex flex-col justify-center items-center text-center text-white px-4 animate-fade-in">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-3 sm:mb-4 tracking-tight font-serif">
+          <div className="absolute inset-0 bg-white/10 dark:bg-black/40 flex flex-col justify-center items-center text-center text-white px-4 pt-20 pb-16 sm:py-32 animate-fade-in">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-4 tracking-tight font-serif max-w-3xl">
               Exotic Epsilon Chapter
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl font-light tracking-wide mb-5 sm:mb-6">
+            <p className="text-base sm:text-lg md:text-xl font-light tracking-wide mb-6 max-w-xl">
               Leadership | Brotherhood | Excellence
             </p>
             <a
               href="#about"
-              className="bg-purple-700 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition duration-300"
+              className="bg-purple-700 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-500 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition duration-300"
             >
               Learn More
             </a>

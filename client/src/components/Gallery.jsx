@@ -48,16 +48,16 @@ export default function Gallery() {
                 <SwiperSlide key={img._id}>
                   <div
                     onClick={() => setFullscreenImg(img)}
-                    className="relative w-full rounded-xl overflow-hidden border border-purple-200 shadow cursor-pointer bg-white/80 backdrop-blur-sm"
+                    className="relative w-full max-w-3xl mx-auto rounded-xl overflow-hidden border border-purple-200 shadow bg-white/80 backdrop-blur-sm hover:shadow-lg transition"
                   >
                     <img
                       src={img.url}
                       alt={img.title || "Gallery image"}
-                      className="w-full max-h-[600px] object-contain bg-white/80 transition-transform duration-200 hover:scale-[1.02]"
+                      className="w-full h-auto max-h-[75vh] object-contain bg-white/80 transition-transform duration-200 hover:scale-[1.02]"
                       loading="lazy"
                     />
                     {img.title && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-sm sm:text-base font-medium text-center py-2 px-3">
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm sm:text-base font-medium text-center py-3 px-4 rounded-b-xl backdrop-blur-sm">
                         {img.title}
                       </div>
                     )}
