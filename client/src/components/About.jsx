@@ -168,7 +168,7 @@ export default function About() {
                   <img
                     src={about.missionImage}
                     alt="Our Mission Image"
-                    className="rounded-xl shadow-lg w-full max-w-[300px] object-contain"
+                    className="rounded-xl shadow-lg w-full max-w-[350px] object-contain"
                   />
                 </div>
               )}
