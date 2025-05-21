@@ -54,7 +54,7 @@ export default function About() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="bg-white/70 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
+      className="bg-white/80 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
     >
       <div className="flex items-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 tracking-tight mb-2">
         {sectionIcons[title]}
@@ -113,7 +113,7 @@ export default function About() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg px-4 py-8 space-y-6"
+            className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg px-4 py-8 space-y-6"
           >
             <div className="flex items-center justify-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 mb-4">
               {sectionIcons["Founding Fathers"]}
@@ -132,7 +132,7 @@ export default function About() {
               {about.foundingFathers.map((name) => (
                 <div
                   key={name}
-                  className="bg-white text-sm sm:text-base font-medium border border-purple-100 rounded-xl px-3 py-2 shadow transition-transform duration-200 hover:scale-105 hover:bg-purple-100 text-center"
+                  className="bg-white/80 backdrop-blur-sm text-sm sm:text-base font-medium border border-purple-100 rounded-xl px-3 py-2 shadow transition-transform duration-200 hover:scale-105 hover:bg-purple-100 text-center"
                 >
                   {name}
                 </div>
@@ -147,7 +147,7 @@ export default function About() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="bg-white/70 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
+            className="bg-white/80 backdrop-blur-sm border border-purple-200 rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
           >
             <div className="flex items-center text-2xl sm:text-3xl font-serif font-semibold text-purple-800 tracking-tight mb-2">
               {sectionIcons["Our Mission"]}

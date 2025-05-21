@@ -4,13 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exotic Epsilon</title>
+
     <style>
-      @keyframes float {
-        0%, 100% {
-          transform: translateY(0) scale(1);
+      @keyframes floatFade {
+        0% {
+          transform: translateY(0) scale(1) rotate(0deg);
+          opacity: 0.5;
         }
         50% {
-          transform: translateY(-60px) scale(1.15);
+          transform: translateY(-80px) scale(1.2) rotate(5deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0) scale(1) rotate(0deg);
+          opacity: 0.5;
+        }
+      }
+
+      @keyframes floatSpinReverse {
+        0% {
+          transform: translateY(0) scale(1) rotate(0deg);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translateY(80px) scale(1.1) rotate(-6deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0) scale(1) rotate(0deg);
+          opacity: 0.6;
         }
       }
 
@@ -20,37 +42,46 @@
         z-index: -1;
         overflow: hidden;
         pointer-events: none;
+        background: linear-gradient(to bottom, #c4b5fd 0%, #f3e8ff 50%, #ede9fe 100%);
       }
 
       .blur-bg {
         position: absolute;
-        width: 1200px;
-        height: 1200px;
+        width: 2000px;
+        height: 2000px;
         filter: blur(160px);
-        opacity: 0.7;
-        animation: float 6s ease-in-out infinite;
         transform: translate(-50%, -50%);
         border-radius: 50%;
       }
 
       .bg1 {
         top: 40%;
-        left: 30%;
+        left: 25%;
         background: #a78bfa;
+        animation: floatFade 10s ease-in-out infinite;
       }
 
       .bg2 {
-        top: 60%;
+        top: 65%;
         left: 70%;
         background: #c084fc;
+        animation: floatSpinReverse 14s ease-in-out infinite;
+      }
+
+      .bg3 {
+        top: 20%;
+        left: 75%;
+        background: #d8b4fe;
+        animation: floatFade 12s ease-in-out infinite;
       }
     </style>
   </head>
   <body class="bg-white dark:bg-gray-900">
-    <!-- ✅ Animated intensified blurry gradient background -->
+    <!-- 🌈 Animated Background with rotation + parallax motion -->
     <div class="blur-layer">
       <div class="blur-bg bg1"></div>
       <div class="blur-bg bg2"></div>
+      <div class="blur-bg bg3"></div>
     </div>
 
     <div id="root"></div>
